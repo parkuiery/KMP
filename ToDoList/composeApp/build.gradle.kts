@@ -25,6 +25,16 @@ kotlin {
         }
         binaries.executable()
     }
+
+    js("wasm") {
+
+    }
+
+//    js(IR) {
+//        binaries.executable()
+//    }
+
+    androidTarget()
     
     androidTarget {
         compilations.all {
@@ -37,19 +47,26 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64{
+            testRuns.all {
+                deviceId = "..."  // xcrun simctl list
+            }
+        }
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
         }
     }
-    
+
+    @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
     sourceSets {
         
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            //ktor
+            implementation("io.ktor:ktor-client-android:2.3.7")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -57,8 +74,28 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            //implementation(compose.components.uiToolingPreview)
+            //직렬화
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            //ktor
+            implementation("io.ktor:ktor-client-core:2.3.7")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
         }
+        iosMain.dependencies {
+            //ktor
+            implementation("io.ktor:ktor-client-darwin:2.3.7")
+        }
+        jsMain.dependencies {
+            //ktor
+            //implementation("io.ktor:ktor-client-js:2.3.7")
+        }
+
+//        val jsMain by getting {
+//            dependencies {
+//
+//            }
+//        }
     }
 }
 
@@ -94,9 +131,21 @@ android {
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        //kotlinCompilerExtensionVersion = "1.5.8.1"
+    }
 }
 
 
 compose.experimental {
     web.application {}
+}
+
+compose {
+    kotlinCompilerPlugin.set("1.5.8.1")
 }
