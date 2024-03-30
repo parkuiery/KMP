@@ -32,6 +32,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("io.ktor:ktor-client-android:2.3.7")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -44,6 +45,14 @@ kotlin {
 
             implementation("media.kamel:kamel-image:0.9.3")
             implementation("com.github.skydoves:flexible-bottomsheet-material3:0.1.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
+            implementation("io.ktor:ktor-client-core:2.3.7")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+        }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:2.3.7")
         }
     }
 }
