@@ -24,10 +24,11 @@ class RocketComponent {
     private suspend fun getDateOfLastSuccessfulLaunch(): String {
         val rockets: List<RocketLaunch> = httpClient.get("https://api.spacexdata.com/v4/launches").body()
         val lastSuccessLaunch = rockets.last{ it.launchSuccess == true }
-        val date = Instant.parse(lastSuccessLaunch.launchDateUTC)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
+        //val date = Instant.parse(lastSuccessLaunch.launchDateUTC)
+            //.toLocalDateTime(TimeZone.currentSystemDefault())
 
-        return "${date.month} ${date.dayOfMonth}, ${date.year}"
+        //return "${date.month} ${date.dayOfMonth}, ${date.year}"
+        return ""
     }
 
     suspend fun launchPhrase(): String =

@@ -10,9 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,23 +31,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.flexible.bottomsheet.material3.FlexibleBottomSheet
 import com.skydoves.flexible.core.FlexibleSheetSize
-import com.skydoves.flexible.core.FlexibleSheetState
+import com.skydoves.flexible.core.FlexibleSheetValue
 import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
 import first.composeapp.generated.resources.Image3
 import first.composeapp.generated.resources.Res
 import first.composeapp.generated.resources.bottom_bar
-import first.composeapp.generated.resources.compose_multiplatform
 import first.composeapp.generated.resources.ic_button
 import first.composeapp.generated.resources.ic_house
 import first.composeapp.generated.resources.ic_hover
 import first.composeapp.generated.resources.ic_symbol
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun HomeScreen() {
     var isShowingBottomSheet by remember { mutableStateOf(true) }
+    var currentSheetTarget by remember {
+        mutableStateOf(FlexibleSheetValue.IntermediatelyExpanded)
+    }
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -69,15 +77,44 @@ fun HomeScreen() {
                 contentScale = ContentScale.FillWidth,
                 contentDescription = "house",
             )
+//            Scaffold(
+//                bottomBar = { BottomNavigationBar() }
+//            ) {
+//                BottomSheet(
+//                    //modifier = Modifier.padding(paddingValues = it)
+//                )
+//            }
+            BottomNavigationBar(isClickBottomSheet = {isShowingBottomSheet = !isShowingBottomSheet})
             if(isShowingBottomSheet) {
-                BottomSheet{
-                    isShowingBottomSheet = false
-                }
+                BottomSheet(
+                    onDismissRequest = { isShowingBottomSheet = false },
+                    bottomSheetState = { currentSheetTarget = it },
+                )
             }
-            BottomBar(
-                isClickBottomSheet = { isShowingBottomSheet = !isShowingBottomSheet }
-            )
+            //BottomNavigationBar()
+            //BottomSheet()
+//            Box{
+//                BottomNavigationBar()
+//                BottomSheet()
+//            }
+//            ModalBottomSheetLayout(
+//                sheetState = bottomSheetState,
+//                sheetContent = {
+//                    Text("dsdfsd")
+//                }
+//            ) {
+//                //BottomNavigationBar()
+//            }
+//            if (isShowingBottomSheet) {
+//                BottomSheet {
+//                    isShowingBottomSheet = false
+//                }
+//            }
+//            BottomBar(
+//                isClickBottomSheet = { isShowingBottomSheet = !isShowingBottomSheet }
+//            )
         }
+
     }
 }
 
@@ -129,7 +166,7 @@ private fun BottomBar(
 ) {
     Box(
         contentAlignment = Alignment.BottomCenter,
-    ){
+    ) {
         Image(
             painter = painterResource(Res.drawable.bottom_bar),
             contentDescription = "bottom_bar",
@@ -171,8 +208,9 @@ private fun BottomBar(
         }
     }
 }
+
 @Composable
-private fun BottomSheet(
+private fun BottomShee(
     onDismissRequest: () -> Unit
 ) {
     FlexibleBottomSheet(
