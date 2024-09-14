@@ -1,4 +1,4 @@
-package com.uiel.test
+package com.uiel.core.test1
 
 class Greeting {
     private val platform: Platform = getPlatform()

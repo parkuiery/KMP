@@ -18,7 +18,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "test"
+            baseName = "test1"
             isStatic = true
         }
     }
@@ -34,7 +34,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.uiel.core.test"
+    namespace = "com.uiel.core.test1"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

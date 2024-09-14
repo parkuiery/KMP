@@ -1,4 +1,4 @@
-package com.uiel.test
+package com.uiel.core.test
 
 import platform.UIKit.UIDevice
 
